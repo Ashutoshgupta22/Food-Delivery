@@ -14,6 +14,12 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/nav_delivery"
+        android:title="@string/delivery"
+        android:icon="@drawable/icon__drone_"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/nav_account"
         android:title="@string/account"
         android:icon="@drawable/ic_account"

@@ -3,14 +3,12 @@ package com.example.fooddelivery.view.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivityFragmentBinding
 import com.example.fooddelivery.view.fragment.AccountFragment
 import com.example.fooddelivery.view.fragment.CartFragment
+import com.example.fooddelivery.view.fragment.DeliveryFragment
 import com.example.fooddelivery.view.fragment.HomeFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class FragmentActivity : AppCompatActivity() {
 
@@ -40,6 +38,12 @@ class FragmentActivity : AppCompatActivity() {
                 R.id.nav_account -> {
 
                     loadFragment(AccountFragment())
+                    true
+                }
+
+                R.id.nav_delivery-> {
+
+                    loadFragment(DeliveryFragment())
                     true
                 }
                 else -> {false}

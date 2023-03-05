@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.fooddelivery.R
 
 class CategoriesAdapter(private val imgList: ArrayList<Int>, private val nameList: ArrayList<String>) : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
@@ -36,7 +37,10 @@ class CategoriesAdapter(private val imgList: ArrayList<Int>, private val nameLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.img.setImageResource(imgList[position])
+        Glide.with(holder.itemView)
+            .load(imgList[position])
+            .into(holder.img)
+
         holder.tvName.text = nameList[position]
     }
 

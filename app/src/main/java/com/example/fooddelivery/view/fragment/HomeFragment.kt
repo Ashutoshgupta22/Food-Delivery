@@ -9,8 +9,10 @@ import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.FragmentHomeBinding
 import com.example.fooddelivery.model.CategoriesModel
 import com.example.fooddelivery.model.SpecialsModel
+import com.example.fooddelivery.model.VegModel
 import com.example.fooddelivery.presenter.CategoriesAdapter
 import com.example.fooddelivery.presenter.SpecialsAdapter
+import com.example.fooddelivery.presenter.VegAdapter
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -36,6 +38,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.rvSpecials.apply {
             layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
             adapter = SpecialsAdapter(SpecialsModel().specialsList)
+        }
+
+        binding.rvVeg.apply {
+            layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
+            adapter = VegAdapter(VegModel().vegList)
+
+            Log.i("HomeFragment", "onViewCreated: Veg= ${VegModel().vegList[0]["name"]}")
+        }
+
+        binding.rvNonVeg.apply {
+            layoutManager = LinearLayoutManager(view.context,LinearLayoutManager.HORIZONTAL,false)
+            adapter = VegAdapter(VegModel().nonVegList)
+
+            Log.i("HomeFragment", "onViewCreated: Veg= ${VegModel().nonVegList[0]["name"]}")
         }
 
     }
