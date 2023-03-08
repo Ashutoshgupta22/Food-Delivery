@@ -14,6 +14,7 @@ class ItemActivity : AppCompatActivity() {
         binding = ActivityItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imgFullItem.clipToOutline = true
 
     }
 }

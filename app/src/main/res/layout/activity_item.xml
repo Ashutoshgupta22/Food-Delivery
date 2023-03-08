@@ -1,9 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_green_light"
     tools:context=".view.activity.ItemActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="142dp" />
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_full_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Add to cart"
+        app:icon="@drawable/ic_add"
+        android:clickable="true"
+        app:iconGravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="190dp"
+        tools:layout_editor_absoluteY="113dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/last_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+               android:layout_marginTop="180dp"
+            android:background="@drawable/rectangular_bg"
+                android:paddingBottom="33dp">
+
+                <TextView
+                    android:id="@+id/tv_full_item_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="120dp"
+                    android:padding="16dp"
+                    android:text="Rice pasta with shrimps, egg, pork, choy and cabbage. Pasta fave or trying something new, we want your taste buds to be your happy buds."
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="202dp"
+                    tools:layout_editor_absoluteY="339dp" />
+
+                <TextView
+                    android:id="@+id/tv_full_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Pasta"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_item_about"
+                    tools:layout_editor_absoluteX="115dp"
+                    tools:layout_editor_absoluteY="195dp" />
+
+                <TextView
+                    android:id="@+id/tv_full_item_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="350 g/520 kcal"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_item_name"
+                    tools:layout_editor_absoluteX="75dp"
+                    tools:layout_editor_absoluteY="137dp" />
+
+                <TextView
+                    android:id="@+id/tv_full_item_portion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:text="1 portion"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_item_name"
+                    tools:layout_editor_absoluteX="263dp"
+                    tools:layout_editor_absoluteY="237dp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="26dp"
+                    android:text="Time"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_item_weight"
+                    tools:layout_editor_absoluteX="69dp"
+                    tools:layout_editor_absoluteY="156dp" />
+
+            <TextView
+                android:id="@+id/tv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="26dp"
+                android:text="Rating"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_full_item_weight"
+                tools:layout_editor_absoluteX="69dp"
+                tools:layout_editor_absoluteY="156dp" />
+
+                <TextView
+                    android:id="@+id/tv_full_item_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="40 mins"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    tools:layout_editor_absoluteX="40dp"
+                    tools:layout_editor_absoluteY="65dp" />
+
+                <ImageView
+                    android:id="@+id/img_full_item_rating5"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginEnd="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    app:srcCompat="@drawable/ic_star"
+                    tools:layout_editor_absoluteX="86dp"
+                    tools:layout_editor_absoluteY="233dp" />
+
+                <ImageView
+                    android:id="@+id/img_full_item_rating4"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    app:layout_constraintEnd_toStartOf="@id/img_full_item_rating5"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    app:srcCompat="@drawable/ic_star"
+                    tools:layout_editor_absoluteX="86dp"
+                    tools:layout_editor_absoluteY="233dp" />
+
+                <ImageView
+                    android:id="@+id/img_full_item_rating3"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    app:layout_constraintEnd_toStartOf="@id/img_full_item_rating4"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    app:srcCompat="@drawable/ic_star"
+                    tools:layout_editor_absoluteX="86dp"
+                    tools:layout_editor_absoluteY="233dp" />
+
+                <ImageView
+                    android:id="@+id/img_full_item_rating2"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    app:layout_constraintEnd_toStartOf="@id/img_full_item_rating3"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    app:srcCompat="@drawable/ic_star"
+                    tools:layout_editor_absoluteX="86dp"
+                    tools:layout_editor_absoluteY="233dp" />
+
+                <ImageView
+                    android:id="@+id/img_full_item_rating1"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    app:layout_constraintEnd_toStartOf="@id/img_full_item_rating2"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    app:srcCompat="@drawable/ic_star"
+                    tools:layout_editor_absoluteX="86dp"
+                    tools:layout_editor_absoluteY="233dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_full_item_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="26dp"
+                    android:text="Rs. 190"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_item_time"
+                    tools:layout_editor_absoluteX="263dp"
+                    tools:layout_editor_absoluteY="237dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/img_full_item"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:elevation="12dp"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="70dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circular_elevated_background"
+            app:srcCompat="@drawable/pasta"
+            tools:layout_editor_absoluteY="102dp" />
+
+    </RelativeLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
