@@ -5,15 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_light"
     tools:context=".view.activity.ItemActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:navigationIcon="@drawable/ic_back_arrow"
+        app:menu="@menu/toolbar_menu"
+        android:background="@android:color/holo_green_light"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,14 +45,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_light">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/last_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                android:layout_marginTop="180dp"
-            android:background="@drawable/rectangular_bg"
+                android:background="@drawable/rectangular_bg"
                 android:paddingBottom="33dp">
 
                 <TextView
@@ -208,6 +211,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="26dp"
                     android:text="Rs. 190"
+                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -226,7 +230,7 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="70dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/circular_elevated_background"
+            android:background="@drawable/circular_bg"
             app:srcCompat="@drawable/pasta"
             tools:layout_editor_absoluteY="102dp" />
 

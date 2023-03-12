@@ -75,7 +75,7 @@
             android:outlineProvider="background"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:background="@drawable/circular_elevated_background"
+            android:background="@drawable/circular_bg"
             android:elevation="12dp"
             tools:layout_editor_absoluteX="49dp"
             tools:layout_editor_absoluteY="115dp"
