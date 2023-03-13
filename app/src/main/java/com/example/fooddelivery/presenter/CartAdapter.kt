@@ -49,9 +49,11 @@ class CartAdapter(private val cartList : ArrayList<HashMap<String,Any>>) : Recyc
            .load(cartList[position]["image"])
            .into(holder.imgItem)
 
+        val price = cartList[position]["price"] as Int
+
         holder.tvName.text = cartList[position]["name"] as String
         holder.tvAbout.text = cartList[position]["about"] as String
-        holder.tvPrice.text = cartList[position]["price"] as String
+        holder.tvPrice.text = "₹${price}"
     }
 
     override fun getItemCount(): Int {

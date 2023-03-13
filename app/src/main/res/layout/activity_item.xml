@@ -40,7 +40,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
     <RelativeLayout
@@ -210,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="26dp"
-                    android:text="Rs. 190"
+                    android:text="₹190"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="22sp"

@@ -1,5 +1,8 @@
 package com.example.fooddelivery
 
+import com.example.fooddelivery.databinding.FragmentCartBinding
+import com.example.fooddelivery.view.fragment.CartFragment
+
 interface Contract {
 
     interface Model {
@@ -7,6 +10,10 @@ interface Contract {
     }
 
     interface View {
+
+        interface CartView {
+            fun hideCartEmpty(binding: FragmentCartBinding)
+        }
 
     }
 
@@ -21,6 +28,10 @@ interface Contract {
         interface OtpPresenter {
 
             fun loginBtnClickListener(view: android.view.View)
+        }
+
+        interface CartPresenter {
+            fun hideCartEmpty(cartFragment: CartFragment, binding: FragmentCartBinding)
         }
 
     }
