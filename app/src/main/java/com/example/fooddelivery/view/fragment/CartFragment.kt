@@ -42,6 +42,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) , Contract.View.CartView {
            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
            adapter = CartAdapter(CartModel.cartList)
        }
+
+        binding.btnCartPay.setOnClickListener {
+
+
+        }
     }
 
     override fun hideCartEmpty(binding: FragmentCartBinding) {

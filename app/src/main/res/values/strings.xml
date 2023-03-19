@@ -8,4 +8,5 @@
     <string name="cart">Cart</string>
     <string name="account">Account</string>
     <string name="delivery">Delivery</string>
+    <string name="google_maps_key">AIzaSyBF8R01nyNG1YbsrDqIrgSL-48uXtxjfSE</string>
 </resources>
