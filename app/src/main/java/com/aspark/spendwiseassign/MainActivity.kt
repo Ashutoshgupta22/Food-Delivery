@@ -246,52 +246,137 @@ fun HomeScreenContent(innerPadding: PaddingValues) {
             .verticalScroll(rememberScrollState())
             .padding(innerPadding)
     ) {
+        MyNextMeal()
+        Subscriptions()
+        PopularMeals()
+        Offers()
+    }
+}
 
-        TextLabel("my next meal")
+@Composable
+fun MyNextMeal() {
+    TextLabel("my next meal")
+    Row(
+        modifier = Modifier
+            .padding(start = 16.dp)
+    ) {
 
-        Row(
+        RoundCornerImage(75, 80)
+
+        Column(
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 8.dp)
+                .wrapContentWidth()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .size(width = 75.dp, height = 80.dp)
+            Text(
+                text = "Biryani", fontWeight = FontWeight.Bold,
+                fontSize = 20.sp, modifier = Modifier.padding(bottom = 4.dp)
             )
+            Text(text = "Dinner", fontSize = 20.sp, modifier = Modifier.padding(bottom = 4.dp))
+            Text(text = "Arriving : 8:30 pm", fontSize = 20.sp)
+        }
 
-            Column(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .wrapContentWidth()
-            ) {
+        Spacer(modifier = Modifier.weight(1f))
+
+        Box(
+            modifier = Modifier.height(90.dp),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+
+            TextButton(onClick = { /*TODO*/ }) {
                 Text(
-                    text = "Biryani", fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp, modifier = Modifier.padding(bottom = 4.dp)
+                    text = "Edit", fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                    textDecoration = TextDecoration.Underline
                 )
-                Text(text = "Dinner", fontSize = 20.sp, modifier = Modifier.padding(bottom = 4.dp))
-                Text(text = "Arriving : 8:30 pm", fontSize = 20.sp)
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Box(
-                modifier = Modifier.height(90.dp),
-                contentAlignment = Alignment.BottomEnd
-            ) {
-
-                TextButton(onClick = { /*TODO*/ }) {
-                    Text(
-                        text = "Edit", fontSize = 18.sp, fontWeight = FontWeight.Bold,
-                        textDecoration = TextDecoration.Underline
-                    )
-                }
             }
         }
     }
+}
 
+@Composable
+fun Subscriptions() {
+    TextLabel(label = "Subscriptions")
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        SubscriptionItem(label = "Breakfast")
+        SubscriptionItem(label = "Lunch")
+        SubscriptionItem(label = "Dinner")
+    }
+}
+
+@Composable
+fun SubscriptionItem(label: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        RoundCornerImage(width = 110, height = 130)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = label, fontSize = 18.sp)
+    }
+}
+
+@Composable
+fun PopularMeals() {
+    TextLabel(label = "Popular meals")
+
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)
+    ) {
+
+        items(listOf("Veg Thali", "Chicken Thali", "Pulao", "Biryani", "Mutton Thali")) {
+            Column(
+                Modifier.padding(end = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = "",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(80.dp)
+                )
+
+                Text(text = it)
+            }
+        }
+
+    }
+
+}
+
+@Composable
+fun Offers() {
+    TextLabel(label = "Offers just for you")
+
+    LazyRow(
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)
+    ) {
+
+        items(3) {
+
+            RoundCornerImage(width = 280, height = 180)
+            Spacer(modifier = Modifier.width(14.dp))
+        }
+    }
+}
+
+@Composable
+fun RoundCornerImage(width: Int, height: Int) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_launcher_background),
+        contentDescription = "",
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .size(width = width.dp, height = height.dp)
+    )
 }
 
 @Composable
