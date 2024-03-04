@@ -11,16 +11,9 @@ fun MyMealScreen() {
     Text(text = "My Meals")
 }
 
-@Composable
-fun QuickGrabScreen() {
-    Log.i("Screens", "QuickGrabScreen: called")
-    Text(text = "Quick Grab screen")
-
-}
 
 @Composable
 fun ProfileScreen() {
     Log.i("Screens", "ProfileScreen: called")
     Text(text = "Profile screen")
-
 }

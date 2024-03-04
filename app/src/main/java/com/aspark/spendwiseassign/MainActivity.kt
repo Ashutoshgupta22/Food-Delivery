@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
                     //HomeScreen(navController)
 
                     Scaffold(
-                        topBar = { TopBar() },
+                        topBar = {  },
                         bottomBar = { BottomNavigationBar(navController) }
                     ) {
 //                        HomeScreenContent(it)
@@ -120,7 +120,7 @@ fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValue
             MyMealScreen()
         }
         composable(BottomNavItem.QuickGrab.route) {
-            QuickGrabScreen()
+            QuickGrabScreen(navController)
         }
         composable(BottomNavItem.Profile.route) {
             ProfileScreen()
@@ -273,17 +273,22 @@ fun MultiSelectFilterChip() {
 
 @Composable
 fun HomeScreenContent(innerPadding: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(innerPadding)
-    ) {
-        MyNextMeal()
-        Subscriptions()
-        PopularMeals()
-        Offers()
+    Column {
+        TopBar()
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(innerPadding)
+        ) {
+            MyNextMeal()
+            Subscriptions()
+            PopularMeals()
+            Offers()
+        }
     }
 }
+
 
 @Composable
 fun MyNextMeal() {
