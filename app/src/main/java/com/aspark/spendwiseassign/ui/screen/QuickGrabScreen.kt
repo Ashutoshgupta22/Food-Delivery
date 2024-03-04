@@ -27,6 +27,7 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +47,7 @@ import com.aspark.spendwiseassign.ui.theme.gold
 fun QuickGrabScreen(navController: NavController) {
 
     Column {
-        LunchTopBar(navController) { }
+        LunchTopBar(navController)
         Column(
             Modifier.verticalScroll(rememberScrollState())
         ) {
@@ -57,11 +58,13 @@ fun QuickGrabScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LunchTopBar(navController: NavController, filterChip: @Composable () -> Unit) {
+fun LunchTopBar(navController: NavController) {
 
     Column {
         LargeTopAppBar(
-            modifier = Modifier,
+            colors = TopAppBarDefaults.largeTopAppBarColors(
+                containerColor = Color.White
+            ),
             title = {
                 SearchBar(
                     modifier = Modifier
@@ -108,8 +111,6 @@ fun LunchTopBar(navController: NavController, filterChip: @Composable () -> Unit
                             contentDescription = ""
                         )
                     }
-
-//                    Spacer(modifier = Modifier.width(135.dp))
 
                     Row(
                         Modifier.fillMaxWidth(),

@@ -40,6 +40,7 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,7 +66,8 @@ import com.aspark.spendwiseassign.ui.theme.gold
 fun LunchScreen(navController: NavController) {
 
     Column {
-        LunchScreenTopBar(navController = navController)
+        LunchTopBar(navController = navController)
+        MultiSelectFilterChip()
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -79,79 +81,6 @@ fun LunchScreen(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun LunchScreenTopBar(navController: NavController) {
-
-    Column {
-        LargeTopAppBar(
-            modifier = Modifier,
-            title = {
-                SearchBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(end = 16.dp)
-                        .border(1.dp, Color.Gray, shape = RoundedCornerShape(12.dp)),
-                    query = "",
-                    onQueryChange = {},
-                    onSearch = {},
-                    active = false,
-                    onActiveChange = {},
-                    placeholder = {
-                        Text(
-                            modifier = Modifier.wrapContentSize(),
-                            text = "Search for meals, chefs and more", color = Color.Gray,
-                            fontSize = 17.sp
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            modifier = Modifier.wrapContentSize(),
-                            imageVector = Icons.Outlined.Search, contentDescription = "",
-                            tint = Color.Gray
-                        )
-                    },
-                    colors = SearchBarDefaults.colors(
-                        containerColor = Color.Transparent
-                    )
-                ) {
-                    MultiSelectFilterChip()
-                }
-            },
-            navigationIcon = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = { navController.popBackStack() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = ""
-                        )
-                    }
-
-//                    Spacer(modifier = Modifier.width(135.dp))
-
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "Lunch", fontSize = 22.sp, fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(end = 45.dp)
-                        )
-                    }
-                }
-            }
-        )
-    }
-
-}
-
-
 @Composable
 fun RestaurantCard(restaurant: LunchRestaurant) {
 
@@ -159,11 +88,12 @@ fun RestaurantCard(restaurant: LunchRestaurant) {
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
+            contentColor = Color.Black
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -238,7 +168,7 @@ fun DishCard(dish: Dish) {
             .width(310.dp),
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -314,7 +244,10 @@ fun DishCard(dish: Dish) {
                         modifier = Modifier.padding(top = 95.dp),
                         shape = RoundedCornerShape(4.dp),
                         onClick = { /*TODO*/ },
-                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp)
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
+                        colors = ButtonDefaults.elevatedButtonColors(
+                            containerColor = Color.White
+                        )
                     ) {
                         Text(
                             text = "Add", fontWeight = FontWeight.Bold,
@@ -332,8 +265,8 @@ fun DishCard(dish: Dish) {
 @Composable
 fun LunchScreenPreview() {
 
-//    LunchScreen(navController = rememberNavController())
+    LunchScreen(navController = rememberNavController())
 //    DishCard(lunchRestaurants[0].menuList[0])
-    RestaurantCard(lunchRestaurants[0])
+//    RestaurantCard(lunchRestaurants[0])
 
 }

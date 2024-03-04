@@ -39,6 +39,7 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
@@ -50,9 +51,11 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -195,7 +198,9 @@ fun TopBar() {
     Column {
 
         LargeTopAppBar(
-            modifier = Modifier,
+            colors = TopAppBarDefaults.largeTopAppBarColors(
+                containerColor = Color.White
+            ),
             title = {
                 SearchBar(
                     modifier = Modifier
@@ -286,7 +291,15 @@ fun MultiSelectFilterChip() {
                             contentDescription = ""
                         )
                     }
-                }
+                },
+                colors = FilterChipDefaults.elevatedFilterChipColors(
+                    containerColor = Color.White,
+                    selectedContainerColor = AppOrange,
+                    selectedLabelColor = Color.White
+                ),
+                elevation = FilterChipDefaults.elevatedFilterChipElevation(
+                    elevation = 4.dp
+                )
             )
         }
     }
