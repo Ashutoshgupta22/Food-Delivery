@@ -11,3 +11,4 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val AppOrange = Color(0xFFFE724C)
+val gold = Color(0xFFFF9800)
