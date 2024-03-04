@@ -1,29 +1,50 @@
 package com.aspark.spendwiseassign.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,9 +55,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.aspark.spendwiseassign.R
 import com.aspark.spendwiseassign.model.Dish
+import com.aspark.spendwiseassign.model.LunchRestaurant
 import com.aspark.spendwiseassign.model.lunchRestaurants
 import com.aspark.spendwiseassign.ui.MultiSelectFilterChip
-import com.aspark.spendwiseassign.ui.RoundCornerImage
 import com.aspark.spendwiseassign.ui.theme.AppOrange
 import com.aspark.spendwiseassign.ui.theme.gold
 
@@ -44,8 +65,166 @@ import com.aspark.spendwiseassign.ui.theme.gold
 fun LunchScreen(navController: NavController) {
 
     Column {
-        LunchTopBar(navController = navController) {
-            MultiSelectFilterChip()
+        LunchScreenTopBar(navController = navController)
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            itemsIndexed(lunchRestaurants) { index, restaurant ->
+                RestaurantCard(restaurant)
+                if (index == lunchRestaurants.lastIndex)
+                    Spacer(modifier = Modifier.height(100.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LunchScreenTopBar(navController: NavController) {
+
+    Column {
+        LargeTopAppBar(
+            modifier = Modifier,
+            title = {
+                SearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(55.dp)
+                        .padding(end = 16.dp)
+                        .border(1.dp, Color.Gray, shape = RoundedCornerShape(12.dp)),
+                    query = "",
+                    onQueryChange = {},
+                    onSearch = {},
+                    active = false,
+                    onActiveChange = {},
+                    placeholder = {
+                        Text(
+                            modifier = Modifier.wrapContentSize(),
+                            text = "Search for meals, chefs and more", color = Color.Gray,
+                            fontSize = 17.sp
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            modifier = Modifier.wrapContentSize(),
+                            imageVector = Icons.Outlined.Search, contentDescription = "",
+                            tint = Color.Gray
+                        )
+                    },
+                    colors = SearchBarDefaults.colors(
+                        containerColor = Color.Transparent
+                    )
+                ) {
+                    MultiSelectFilterChip()
+                }
+            },
+            navigationIcon = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = ""
+                        )
+                    }
+
+//                    Spacer(modifier = Modifier.width(135.dp))
+
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Lunch", fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(end = 45.dp)
+                        )
+                    }
+                }
+            }
+        )
+    }
+
+}
+
+
+@Composable
+fun RestaurantCard(restaurant: LunchRestaurant) {
+
+    ElevatedCard(
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        onClick = { /*TODO*/ },
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            Modifier
+                .fillMaxWidth(),
+        ) {
+
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = restaurant.name, fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp, modifier = Modifier.padding(top = 8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowForward,
+                            contentDescription = ""
+                        )
+                    }
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "${restaurant.rating}", fontWeight = FontWeight.Bold,
+                    )
+
+                    Icon(
+                        imageVector = Icons.Default.Star, contentDescription = "",
+                        tint = gold, modifier = Modifier.size(22.dp)
+                    )
+                    Text(
+                        text = "${restaurant.deliveryTime} | ${restaurant.distance}",
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Text(
+                    text = "Starts from Rs.${restaurant.startingPrice} only",
+                    fontSize = 15.sp, modifier = Modifier.padding(top = 6.dp)
+                )
+            }
+
+            LazyRow(
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(restaurant.menuList) {
+                    DishCard(dish = it)
+                }
+            }
         }
     }
 }
@@ -54,10 +233,13 @@ fun LunchScreen(navController: NavController) {
 fun DishCard(dish: Dish) {
 
     ElevatedCard(
-        modifier = Modifier.height(180.dp)
-            .width(340.dp),
+        modifier = Modifier
+            .height(170.dp)
+            .width(310.dp),
         onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(24.dp)
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier.padding(16.dp)
@@ -77,39 +259,43 @@ fun DishCard(dish: Dish) {
                         .width(20.dp)
                 )
 
-                Text(text = dish.name, fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp, modifier = Modifier.padding(top = 8.dp))
+                Text(
+                    text = dish.name, fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp, modifier = Modifier.padding(top = 4.dp)
+                )
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(text = dish.description,
-                    fontSize = 18.sp)
-                Text(text = "Rs. ${dish.price}",
-                    fontSize = 18.sp, modifier = Modifier.padding(vertical = 6.dp))
+                Text(
+                    text = dish.description,
+                    fontSize = 14.sp, color = Color.Gray
+                )
+                Text(
+                    text = "Rs.${dish.price}",
+                    fontSize = 14.sp, modifier = Modifier.padding(vertical = 6.dp)
+                )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "${dish.rating}", fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 14.sp
                     )
 
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "",
-                        tint = gold
+                    Icon(
+                        imageVector = Icons.Default.Star, contentDescription = "",
+                        tint = gold, modifier = Modifier.size(20.dp)
                     )
 
                     Text(
                         text = "(${dish.noOfReviews})",
-                        fontSize = 18.sp
+                        fontSize = 14.sp
                     )
-
                 }
             }
             Box(
                 modifier = Modifier.fillMaxHeight(),
 
-            ) {
+                ) {
                 Image(
                     painter = painterResource(dish.image),
                     contentDescription = "",
@@ -127,7 +313,8 @@ fun DishCard(dish: Dish) {
                     ElevatedButton(
                         modifier = Modifier.padding(top = 95.dp),
                         shape = RoundedCornerShape(4.dp),
-                        onClick = { /*TODO*/ }
+                        onClick = { /*TODO*/ },
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp)
                     ) {
                         Text(
                             text = "Add", fontWeight = FontWeight.Bold,
@@ -146,6 +333,7 @@ fun DishCard(dish: Dish) {
 fun LunchScreenPreview() {
 
 //    LunchScreen(navController = rememberNavController())
-    DishCard(lunchRestaurants[0].menuList[0])
+//    DishCard(lunchRestaurants[0].menuList[0])
+    RestaurantCard(lunchRestaurants[0])
 
 }

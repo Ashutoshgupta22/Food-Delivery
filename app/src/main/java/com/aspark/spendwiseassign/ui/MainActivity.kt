@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -44,6 +45,8 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -156,8 +159,13 @@ fun BottomNavigationBar(navController: NavController) {
     ) {
 
         items.forEach { item ->
+            val selected = if (currentRoute == item.route)
+                true
+                else currentRoute == Lunch_Screen && item.route == BottomNavItem.Home.route
+
+
             NavigationBarItem(
-                selected = currentRoute == item.route,
+                selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
 //                        popUpTo(navController.graph.startDestinationId)
@@ -165,16 +173,21 @@ fun BottomNavigationBar(navController: NavController) {
                     }
                 },
                 icon = {
-                    Icon(imageVector = item.icon, contentDescription = "")
+                    Icon(imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
+                        contentDescription = "",
+                        tint = if (selected) AppOrange else Color.DarkGray)
                 },
                 label = {
-                    Text(text = item.label)
-                }
+                    Text(text = item.label, color = if (selected) AppOrange else Color.Black)
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = Color.Transparent
+                )
+
             )
         }
     }
 }
-
 
 @Composable
 fun TopBar() {
@@ -316,11 +329,12 @@ fun MyNextMeal() {
                 .wrapContentWidth()
         ) {
             Text(
-                text = "Biryani", fontWeight = FontWeight.Bold,
-                fontSize = 20.sp, modifier = Modifier.padding(bottom = 4.dp)
+                text = "Biryani", fontWeight = FontWeight.Bold, color = Color.Black,
+                fontSize = 18.sp, modifier = Modifier.padding(bottom = 4.dp)
             )
-            Text(text = "Dinner", fontSize = 20.sp, modifier = Modifier.padding(bottom = 4.dp))
-            Text(text = "Arriving : 8:30 pm", fontSize = 20.sp)
+            Text(text = "Dinner", fontSize = 18.sp, color = Color.Black,
+                modifier = Modifier.padding(bottom = 4.dp))
+            Text(text = "Arriving : 8:30 pm", fontSize = 18.sp, color = Color.Black)
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -330,7 +344,8 @@ fun MyNextMeal() {
             contentAlignment = Alignment.BottomEnd
         ) {
 
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = { /*TODO*/ },
+                colors = ButtonDefaults.buttonColors(contentColor = AppOrange)) {
                 Text(
                     text = "Edit", fontSize = 18.sp, fontWeight = FontWeight.Bold,
                     textDecoration = TextDecoration.Underline
@@ -364,7 +379,7 @@ fun SubscriptionItem(label: String, onClick: () -> Unit) {
     ) {
         RoundCornerImage(width = 110, height = 130)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = label, fontSize = 18.sp)
+        Text(text = label, fontSize = 18.sp, color = Color.Black)
     }
 }
 
@@ -391,7 +406,7 @@ fun PopularMeals() {
                         .size(80.dp)
                 )
 
-                Text(text = it)
+                Text(text = it, color = Color.Black,)
             }
         }
 
@@ -443,6 +458,7 @@ fun TextLabel(label: String) {
         )
         Text(
             text = label.uppercase(),
+            color = Color.Gray,
             modifier = Modifier
                 .background(Color.White)
                 .padding(horizontal = 10.dp)

@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.aspark.spendwiseassign.R
+import com.aspark.spendwiseassign.ui.MultiSelectFilterChip
 import com.aspark.spendwiseassign.ui.theme.gold
 
 @Composable
@@ -59,7 +60,6 @@ fun QuickGrabScreen(navController: NavController) {
 fun LunchTopBar(navController: NavController, filterChip: @Composable () -> Unit) {
 
     Column {
-
         LargeTopAppBar(
             modifier = Modifier,
             title = {
@@ -92,7 +92,7 @@ fun LunchTopBar(navController: NavController, filterChip: @Composable () -> Unit
                         containerColor = Color.Transparent
                     )
                 ) {
-                    filterChip()
+
                 }
             },
             navigationIcon = {
