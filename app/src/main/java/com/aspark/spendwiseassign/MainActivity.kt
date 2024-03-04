@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,14 +15,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
@@ -34,54 +31,49 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarColors
 import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.aspark.spendwiseassign.ui.theme.AppOrange
+import com.aspark.spendwiseassign.ui.theme.MyMealScreen
+import com.aspark.spendwiseassign.ui.theme.ProfileScreen
+import com.aspark.spendwiseassign.ui.theme.QuickGrabScreen
 import com.aspark.spendwiseassign.ui.theme.SpendWiseAssignTheme
 
 class MainActivity : ComponentActivity() {
@@ -94,7 +86,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    val navController = rememberNavController()
+                    //HomeScreen(navController)
+
+                    Scaffold(
+                        topBar = { TopBar() },
+                        bottomBar = { BottomNavigationBar(navController) }
+                    ) {
+//                        HomeScreenContent(it)
+                        NavigationGraph(navController = navController, it)
+
+                    }
+
                 }
             }
         }
@@ -102,37 +105,66 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavigationGraph(navHostController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValues) {
 
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = BottomNavItem.Home.route,
     ) {
 
         composable(BottomNavItem.Home.route) {
-            HomeScreen()
+//            HomeScreen(navController)
+            HomeScreenContent(innerPadding = innerPadding)
         }
         composable(BottomNavItem.MyMeals.route) {
-            HomeScreen()
+            MyMealScreen()
         }
         composable(BottomNavItem.QuickGrab.route) {
-            HomeScreen()
+            QuickGrabScreen()
         }
         composable(BottomNavItem.Profile.route) {
-            HomeScreen()
+            ProfileScreen()
         }
     }
 }
 
 @Composable
-fun HomeScreen() {
-    Scaffold(
-        topBar = { TopBar() },
-        bottomBar = { BottomBar() }
+fun BottomNavigationBar(navController: NavController) {
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val items = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.MyMeals,
+        BottomNavItem.QuickGrab,
+        BottomNavItem.Profile
+    )
+
+    NavigationBar(
+        containerColor = Color.White,
     ) {
-        HomeScreenContent(it)
+
+        items.forEach { item ->
+            NavigationBarItem(
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+//                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                },
+                icon = {
+                    Icon(imageVector = item.icon, contentDescription = "")
+                },
+                label = {
+                    Text(text = item.label)
+                }
+            )
+        }
     }
 }
+
 
 @Composable
 fun TopBar() {
@@ -402,17 +434,10 @@ fun TextLabel(label: String) {
     }
 }
 
-@Composable
-fun BottomBar() {
-    BottomAppBar {
-        Text(text = "Bottom")
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     SpendWiseAssignTheme {
-        HomeScreen()
+//        HomeScreen(Any)
     }
 }
