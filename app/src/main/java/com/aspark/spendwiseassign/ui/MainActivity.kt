@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.aspark.spendwiseassign
+package com.aspark.spendwiseassign.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,6 +9,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,11 +71,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.aspark.spendwiseassign.model.BottomNavItem
+import com.aspark.spendwiseassign.R
 import com.aspark.spendwiseassign.ui.theme.AppOrange
-import com.aspark.spendwiseassign.ui.theme.MyMealScreen
-import com.aspark.spendwiseassign.ui.theme.ProfileScreen
-import com.aspark.spendwiseassign.ui.theme.QuickGrabScreen
+import com.aspark.spendwiseassign.ui.screen.LunchScreen
+import com.aspark.spendwiseassign.ui.screen.MyMealScreen
+import com.aspark.spendwiseassign.ui.screen.ProfileScreen
+import com.aspark.spendwiseassign.ui.screen.QuickGrabScreen
 import com.aspark.spendwiseassign.ui.theme.SpendWiseAssignTheme
+
+const val Lunch_Screen = "LunchScreen"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +120,7 @@ fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValue
 
         composable(BottomNavItem.Home.route) {
 //            HomeScreen(navController)
-            HomeScreenContent(innerPadding = innerPadding)
+            HomeScreenContent(innerPadding = innerPadding, navController)
         }
         composable(BottomNavItem.MyMeals.route) {
             MyMealScreen()
@@ -124,6 +130,10 @@ fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValue
         }
         composable(BottomNavItem.Profile.route) {
             ProfileScreen()
+        }
+
+        composable(Lunch_Screen) {
+            LunchScreen(navController = navController)
         }
     }
 }
@@ -272,7 +282,7 @@ fun MultiSelectFilterChip() {
 
 
 @Composable
-fun HomeScreenContent(innerPadding: PaddingValues) {
+fun HomeScreenContent(innerPadding: PaddingValues, navController: NavController) {
     Column {
         TopBar()
 
@@ -282,7 +292,7 @@ fun HomeScreenContent(innerPadding: PaddingValues) {
                 .padding(innerPadding)
         ) {
             MyNextMeal()
-            Subscriptions()
+            Subscriptions(navController)
             PopularMeals()
             Offers()
         }
@@ -331,7 +341,7 @@ fun MyNextMeal() {
 }
 
 @Composable
-fun Subscriptions() {
+fun Subscriptions(navController: NavController) {
     TextLabel(label = "Subscriptions")
 
     Row(
@@ -340,15 +350,16 @@ fun Subscriptions() {
             .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        SubscriptionItem(label = "Breakfast")
-        SubscriptionItem(label = "Lunch")
-        SubscriptionItem(label = "Dinner")
+        SubscriptionItem(label = "Breakfast") {}
+        SubscriptionItem(label = "Lunch") { navController.navigate(Lunch_Screen) }
+        SubscriptionItem(label = "Dinner") {}
     }
 }
 
 @Composable
-fun SubscriptionItem(label: String) {
+fun SubscriptionItem(label: String, onClick: () -> Unit) {
     Column(
+        modifier = Modifier.clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RoundCornerImage(width = 110, height = 130)

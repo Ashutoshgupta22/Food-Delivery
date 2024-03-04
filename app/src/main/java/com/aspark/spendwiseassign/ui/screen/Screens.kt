@@ -1,4 +1,4 @@
-package com.aspark.spendwiseassign.ui.theme
+package com.aspark.spendwiseassign.ui.screen
 
 import android.util.Log
 import androidx.compose.material3.Text

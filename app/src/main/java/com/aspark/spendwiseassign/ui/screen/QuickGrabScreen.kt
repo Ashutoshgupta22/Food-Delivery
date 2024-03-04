@@ -1,4 +1,4 @@
-package com.aspark.spendwiseassign.ui.theme
+package com.aspark.spendwiseassign.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -41,12 +39,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.aspark.spendwiseassign.R
+import com.aspark.spendwiseassign.ui.theme.gold
 
 @Composable
 fun QuickGrabScreen(navController: NavController) {
 
     Column {
-        QuickGrabTopBar(navController)
+        LunchTopBar(navController) { }
         Column(
             Modifier.verticalScroll(rememberScrollState())
         ) {
@@ -57,7 +56,7 @@ fun QuickGrabScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuickGrabTopBar(navController: NavController) {
+fun LunchTopBar(navController: NavController, filterChip: @Composable () -> Unit) {
 
     Column {
 
@@ -93,6 +92,7 @@ fun QuickGrabTopBar(navController: NavController) {
                         containerColor = Color.Transparent
                     )
                 ) {
+                    filterChip()
                 }
             },
             navigationIcon = {
@@ -126,7 +126,6 @@ fun QuickGrabTopBar(navController: NavController) {
     }
 
 }
-
 
 @Composable
 fun DetailCard() {
