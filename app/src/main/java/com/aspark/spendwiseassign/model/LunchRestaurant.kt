@@ -1,5 +1,7 @@
 package com.aspark.spendwiseassign.model
 
+import com.aspark.spendwiseassign.R
+
 data class LunchRestaurant(
     val name: String,
     val rating: Double,
@@ -15,7 +17,8 @@ data class Dish(
     val price: Int,
     val rating: Double,
     val noOfReviews: Int,
-    val veg: Boolean
+    val veg: Boolean,
+    val image: Int = R.drawable.ic_launcher_background
 )
 
 val lunchRestaurants = listOf(
