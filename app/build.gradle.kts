@@ -52,6 +52,7 @@ android {
 
 dependencies {
 
+//    implementation("androidx.compose.material3.windowsizeclass.WindowSizeClass:1.2.0")
     //compose navigation
     implementation (libs.androidx.navigation.compose)
 
