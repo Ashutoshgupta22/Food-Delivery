@@ -2,6 +2,7 @@
 
 package com.aspark.spendwiseassign.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -57,6 +58,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -106,7 +108,7 @@ class MainActivity : ComponentActivity() {
                         bottomBar = { BottomNavigationBar(navController) }
                     ) {
 //                        HomeScreenContent(it)
-                        NavigationGraph(navController = navController, it)
+                        NavigationGraph(navController = navController, it, this)
 
                     }
 
@@ -117,7 +119,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValues) {
+fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValues,
+                    context: Context) {
 
     NavHost(
         navController = navController,
@@ -132,7 +135,7 @@ fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValue
             MyMealScreen()
         }
         composable(BottomNavItem.QuickGrab.route) {
-            QuickGrabScreen(navController)
+            QuickGrabScreen(navController, context)
         }
         composable(BottomNavItem.Profile.route) {
             ProfileScreen()
