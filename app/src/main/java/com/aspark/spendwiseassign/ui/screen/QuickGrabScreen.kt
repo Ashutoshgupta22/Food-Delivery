@@ -1,10 +1,9 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package com.aspark.spendwiseassign.ui.screen
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -20,7 +19,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,7 +32,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
@@ -44,11 +41,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -70,7 +66,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.aspark.spendwiseassign.R
 import com.aspark.spendwiseassign.model.DragAnchors
 import com.aspark.spendwiseassign.ui.theme.AppOrange
@@ -84,13 +79,11 @@ fun QuickGrabScreen(navController: NavController, context: Context) {
 //    ShowInstruction()
 
     val dishes = listOf("Dish 1", "Dish 2", "Dish 3", "Dish 4")
-    var indexState by remember {
-        mutableIntStateOf(0)
-    }
-
+    var indexState by remember { mutableIntStateOf(0) }
 
     Column {
         LunchTopBar(navController)
+
         Column(
             Modifier.verticalScroll(rememberScrollState())
         ) {
@@ -100,24 +93,13 @@ fun QuickGrabScreen(navController: NavController, context: Context) {
                 val currentCard = dishes[indexState]
                 val nextCard = if (indexState + 1 < dishes.size) dishes[indexState + 1] else null
 
-                var scale by remember(currentCard) {
-                    mutableFloatStateOf(0.85f)
-                }
-
-//                scale = if (isTopCard) 1f else {
-//                    if (abs(scaleState) == 0f) 0.85f
-//                    else {
-//                        (abs(scaleState) / 700)
-//                            .coerceAtLeast(0.85f)
-//                            .coerceAtMost(1f)
-//                    }
-//            }
+                val bottomCardState = remember(currentCard) { mutableFloatStateOf(0.80f) }
 
                 if (nextCard != null) {
-                    CardSwipe(nextCard, false, scale) {}
+                    CardSwipe(nextCard, false, bottomCardState) {}
                 }
 
-                CardSwipe(currentCard, true, scale) { isRightSwiped ->
+                CardSwipe(currentCard, true, bottomCardState) { isRightSwiped ->
                     indexState = (indexState + 1).coerceAtMost(dishes.lastIndex)
                     Log.i("QuickGrabScreen", "index: $indexState")
                     Log.i("QuickGrabScreen", "isRightSwiped: $isRightSwiped")
@@ -165,7 +147,6 @@ fun ShowFirstInstruction(modifier: Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LunchTopBar(navController: NavController) {
 
@@ -240,66 +221,25 @@ fun LunchTopBar(navController: NavController) {
 @Composable
 fun CardSwipe(
     currentCard: String, isTopCard: Boolean,
-    scale: Float, onSwipe: @Composable (Boolean) -> Unit
+    bottomCardState: MutableFloatState, onSwipe: @Composable (Boolean) -> Unit
 ) {
+    val draggableState = rememberAnchoredDraggableState(currentCard)
 
-    val density = LocalDensity.current
+    val offset = draggableState.requireOffset()
 
-    val draggableState = remember(currentCard) {
-        AnchoredDraggableState(
-            initialValue = DragAnchors.CENTER,
-            positionalThreshold = { totalDistance: Float ->
-                totalDistance * 0.4f
-            },
-            velocityThreshold = {
-                with(density) { 1000.dp.toPx() }
-            },
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessVeryLow
-            )
-        ).apply {
-            updateAnchors(
-                DraggableAnchors {
-                    DragAnchors.CENTER at 0f
-                    DragAnchors.START at -1200f
-                    DragAnchors.END at 1200f
-                    DragAnchors.TOP at 0f
-                    DragAnchors.BOTTOM at 1200f
-                }
-            )
-        }
+    // top card changes scale of bottom card only when it is dragged
+    if (isTopCard && abs(offset) != 0f) {
+        bottomCardState.floatValue =  (abs(offset) / 700).coerceIn(0.80f, 1f)
     }
 
-    var isAnimating by remember(currentCard) {
-        mutableStateOf(false)
-    }
-    var scale by remember(currentCard) {
-        mutableFloatStateOf(0f)
-    }
+    if (!isTopCard) Log.i("QuickGRabScreen", "Below card recomposed")
+    else Log.i("QuickGRabScreen", "Top card recomposed")
 
-    var scaleState = draggableState.requireOffset()
-
-    scale = if (isTopCard) 1f else {
-        if (abs(scaleState) == 0f) 0.75f
-        else {
-            (abs(scaleState) / 700)
-                .coerceIn(0.75f, 1f)
-        }
-    }
-    isAnimating = draggableState.isAnimationRunning
-
-
-
-    if (isTopCard)
-        Log.i("GrabSCreen", "scale: ${(abs(scaleState) * 1.5 / 700)}")
-    else
-        Log.i("GrabSCreen", "NOt top card")
+    Log.i("GrabScreen", "scale: $bottomCardState")
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.scale(if (isTopCard) 1f else 1f)
-
+        modifier = Modifier.scale(if (isTopCard) 1f else bottomCardState.floatValue)
     ) {
         val modifier = Modifier
             .fillMaxWidth()
@@ -308,7 +248,6 @@ fun CardSwipe(
         DetailCard(modifier, draggableState, onSwipe, currentCard)
         // ShowFirstInstruction(modifier)
     }
-
 }
 
 @Composable
@@ -316,7 +255,7 @@ fun DetailCard(
     modifier: Modifier,
     draggableState: AnchoredDraggableState<DragAnchors>,
     onSwipe: @Composable (Boolean) -> Unit,
-    currentCard: String
+    currentCard: String,
 ) {
 
     var isRightSwiped by remember(currentCard) { mutableStateOf(false) }
@@ -351,6 +290,39 @@ fun DetailCard(
     } else {
         onSwipe(isRightSwiped)
         Log.i("QuickGrabScreen", "DetailCard: is swiped off")
+    }
+}
+
+@Composable
+fun rememberAnchoredDraggableState(
+    currentCard: String,
+): AnchoredDraggableState<DragAnchors> {
+    val density = LocalDensity.current
+
+    return remember(currentCard) {
+        AnchoredDraggableState(
+            initialValue = DragAnchors.CENTER,
+            positionalThreshold = { totalDistance: Float ->
+                totalDistance * 0.4f
+            },
+            velocityThreshold = {
+                with(density) { 1000.dp.toPx() }
+            },
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessVeryLow
+            )
+        ).apply {
+            updateAnchors(
+                DraggableAnchors {
+                    DragAnchors.CENTER at 0f
+                    DragAnchors.START at -1200f
+                    DragAnchors.END at 1200f
+                    DragAnchors.TOP at 0f
+                    DragAnchors.BOTTOM at 1200f
+                }
+            )
+        }
     }
 }
 
