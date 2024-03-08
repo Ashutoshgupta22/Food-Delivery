@@ -226,16 +226,33 @@ fun CardSwipe(
     val draggableState = rememberAnchoredDraggableState(currentCard)
 
     val offset = draggableState.requireOffset()
+    var dragRatioState by remember { mutableFloatStateOf(0f) }
 
     // top card changes scale of bottom card only when it is dragged
-    if (isTopCard && abs(offset) != 0f) {
-        bottomCardState.floatValue =  (abs(offset) / 700).coerceIn(0.80f, 1f)
+    if (isTopCard) {
+        if ( abs(offset) >= 5f) {
+            val newDragRatio = (abs(offset) / 50000)
+
+            if (newDragRatio > dragRatioState + 0.00005f) {
+                bottomCardState.floatValue = (bottomCardState.floatValue + newDragRatio)
+                    .coerceAtMost(1f)
+                dragRatioState = newDragRatio
+            } else if (newDragRatio < dragRatioState - 0.00005f) {
+                bottomCardState.floatValue = (bottomCardState.floatValue - newDragRatio)
+                    .coerceAtLeast(0.8f)
+                dragRatioState = newDragRatio
+            }
+        } else {
+            dragRatioState = 0f
+            bottomCardState.floatValue = 0.8f
+        }
     }
 
-    if (!isTopCard) Log.i("QuickGRabScreen", "Below card recomposed")
-    else Log.i("QuickGRabScreen", "Top card recomposed")
+    if (!isTopCard) Log.d("QuickGrabScreen", "Below card recomposed")
+    else Log.d("QuickGrabScreen", "Top card recomposed")
 
-    Log.i("GrabScreen", "scale: $bottomCardState")
+    Log.i("GrabScreen", "below card scale: ${bottomCardState.floatValue}")
+    Log.i("GrabScreen", "drag ratio: $dragRatioState")
 
     Box(
         contentAlignment = Alignment.Center,
