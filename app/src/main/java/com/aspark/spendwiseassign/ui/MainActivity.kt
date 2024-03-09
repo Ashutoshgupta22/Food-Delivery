@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
@@ -43,25 +44,27 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.SelectableChipColors
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -87,6 +90,7 @@ import com.aspark.spendwiseassign.ui.screen.MyMealScreen
 import com.aspark.spendwiseassign.ui.screen.ProfileScreen
 import com.aspark.spendwiseassign.ui.screen.QuickGrabScreen
 import com.aspark.spendwiseassign.ui.theme.SpendWiseAssignTheme
+import kotlinx.coroutines.CoroutineScope
 
 const val Lunch_Screen = "LunchScreen"
 
@@ -101,17 +105,21 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    //HomeScreen(navController)
+                    val coroutineScope = rememberCoroutineScope()
+                    val snackBarHostState = remember { SnackbarHostState() }
 
                     Scaffold(
                         topBar = {  },
-                        bottomBar = { BottomNavigationBar(navController) }
+                        bottomBar = { BottomNavigationBar(navController) },
+                        snackbarHost = {
+                            SnackbarHost(hostState = snackBarHostState) {
+                               CustomSnackBar()
+                            }
+                        }
                     ) {
-//                        HomeScreenContent(it)
-                        NavigationGraph(navController = navController, it, this)
-
+                        NavigationGraph(navController = navController, it,
+                            snackBarHostState, coroutineScope)
                     }
-
                 }
             }
         }
@@ -119,8 +127,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValues,
-                    context: Context) {
+fun NavigationGraph(
+    navController: NavHostController, innerPadding: PaddingValues,
+    snackBarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope
+) {
 
     NavHost(
         navController = navController,
@@ -128,14 +139,13 @@ fun NavigationGraph(navController: NavHostController, innerPadding: PaddingValue
     ) {
 
         composable(BottomNavItem.Home.route) {
-//            HomeScreen(navController)
             HomeScreenContent(innerPadding = innerPadding, navController)
         }
         composable(BottomNavItem.MyMeals.route) {
             MyMealScreen()
         }
         composable(BottomNavItem.QuickGrab.route) {
-            QuickGrabScreen(navController, context)
+            QuickGrabScreen(navController, snackBarHostState, coroutineScope)
         }
         composable(BottomNavItem.Profile.route) {
             ProfileScreen()
@@ -169,7 +179,6 @@ fun BottomNavigationBar(navController: NavController) {
                 true
                 else currentRoute == Lunch_Screen && item.route == BottomNavItem.Home.route
 
-
             NavigationBarItem(
                 selected = selected,
                 onClick = {
@@ -189,7 +198,6 @@ fun BottomNavigationBar(navController: NavController) {
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.Transparent
                 )
-
             )
         }
     }
@@ -479,6 +487,26 @@ fun TextLabel(label: String) {
                 .background(Color.White)
                 .padding(horizontal = 10.dp)
         )
+    }
+}
+
+@Composable
+fun CustomSnackBar() {
+    Snackbar(
+        modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+        containerColor = AppOrange,
+        contentColor = Color.White,
+        action = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowForward,
+                    contentDescription = "",
+                    tint = Color.White
+                )
+            }
+        }
+    ) {
+        Text(text = "1 Item added in cart", fontSize = 18.sp)
     }
 }
 

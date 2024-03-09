@@ -2,7 +2,6 @@
 
 package com.aspark.spendwiseassign.ui.screen
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -41,6 +40,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -71,10 +73,16 @@ import com.aspark.spendwiseassign.model.DragAnchors
 import com.aspark.spendwiseassign.ui.theme.AppOrange
 import com.aspark.spendwiseassign.ui.theme.SpendWiseAssignTheme
 import com.aspark.spendwiseassign.ui.theme.gold
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @Composable
-fun QuickGrabScreen(navController: NavController, context: Context) {
+fun QuickGrabScreen(
+    navController: NavController,
+    snackBarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope
+) {
 
 //    ShowInstruction()
 
@@ -105,26 +113,7 @@ fun QuickGrabScreen(navController: NavController, context: Context) {
                     Log.i("QuickGrabScreen", "isRightSwiped: $isRightSwiped")
 
                     if (isRightSwiped)
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.Bottom
-                        ) {
-//                            Toast.makeText(context, "1 item added in cart", Toast.LENGTH_SHORT).show()
-
-
-//                            Snackbar(
-//                                modifier = Modifier.padding(16.dp),
-//                                action = {
-//                                        Icon(
-//                                            imageVector = Icons.AutoMirrored.Default.ArrowForward,
-//                                            contentDescription = ""
-//                                        )
-//
-//                                }
-//                            ) {
-//                                Text(text = "1 Item Added in cart")
-//                            }
-                        }
+                        showSnackBar(coroutineScope, snackBarHostState)
                 }
 
             }
@@ -230,7 +219,7 @@ fun CardSwipe(
 
     // top card changes scale of bottom card only when it is dragged
     if (isTopCard) {
-        if ( abs(offset) >= 5f) {
+        if (abs(offset) >= 5f) {
             val newDragRatio = (abs(offset) / 50000)
 
             if (newDragRatio > dragRatioState + 0.00005f) {
@@ -408,6 +397,23 @@ fun CardContent(currentCard: String) {
     }
 }
 
+fun showSnackBar(coroutineScope: CoroutineScope,
+                 snackBarHostState: SnackbarHostState) {
+
+    coroutineScope.launch {
+        val result = snackBarHostState.showSnackbar(
+            message = "1 Item added to cart",
+            actionLabel = "Action",
+            duration = SnackbarDuration.Short
+        )
+
+        when(result) {
+            SnackbarResult.ActionPerformed -> {}
+            SnackbarResult.Dismissed -> {}
+        }
+    }
+}
+
 fun calculateTilt(requireOffset: Float): Float = -requireOffset.div(90)
 
 fun calculateYOffset(xOffset: Float): Float {
@@ -418,7 +424,6 @@ fun calculateYOffset(xOffset: Float): Float {
 @Preview(showBackground = true)
 @Composable
 fun QuickGrabScreenPreview() {
-
     SpendWiseAssignTheme {
 //        QuickGrabScreen(navController = rememberNavController())
     }
