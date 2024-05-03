@@ -149,7 +149,8 @@ fun RestaurantCard(restaurant: LunchRestaurant) {
 
             LazyRow(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 items(restaurant.menuList) {
                     DishCard(dish = it)
@@ -180,7 +181,7 @@ fun DishCard(dish: Dish) {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = R.drawable.veg_icon),
                     contentDescription = "",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
@@ -227,7 +228,7 @@ fun DishCard(dish: Dish) {
 
                 ) {
                 Image(
-                    painter = painterResource(dish.image),
+                    painter = painterResource(R.drawable.food_sq),
                     contentDescription = "",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier

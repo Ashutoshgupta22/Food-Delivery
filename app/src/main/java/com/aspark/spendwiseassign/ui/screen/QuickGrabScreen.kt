@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -68,6 +69,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.aspark.spendwiseassign.R
 import com.aspark.spendwiseassign.model.DragAnchors
 import com.aspark.spendwiseassign.ui.theme.AppOrange
@@ -83,8 +85,6 @@ fun QuickGrabScreen(
     snackBarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope
 ) {
-
-//    ShowInstruction()
 
     val dishes = listOf("Dish 1", "Dish 2", "Dish 3", "Dish 4")
     var indexState by remember { mutableIntStateOf(0) }
@@ -122,16 +122,11 @@ fun QuickGrabScreen(
 }
 
 @Composable
-fun ShowFirstInstruction(modifier: Modifier) {
-
+fun ShowInstruction(modifier: Modifier) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp, start = 18.dp, end = 18.dp, bottom = 150.dp)
             .background(AppOrange)
-
     ) {
-
         Text(text = "This")
     }
 }
@@ -251,8 +246,7 @@ fun CardSwipe(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = 16.dp, start = 18.dp, end = 18.dp, bottom = 150.dp)
-        DetailCard(modifier, draggableState, onSwipe, currentCard)
-        // ShowFirstInstruction(modifier)
+        DetailCard(modifier, draggableState, onSwipe, currentCard, isTopCard)
     }
 }
 
@@ -262,8 +256,8 @@ fun DetailCard(
     draggableState: AnchoredDraggableState<DragAnchors>,
     onSwipe: @Composable (Boolean) -> Unit,
     currentCard: String,
+    isTopCard: Boolean
 ) {
-
     var isRightSwiped by remember(currentCard) { mutableStateOf(false) }
     var isSwipedOff by remember(currentCard) { mutableStateOf(false) }
 
@@ -297,6 +291,9 @@ fun DetailCard(
         onSwipe(isRightSwiped)
         Log.i("QuickGrabScreen", "DetailCard: is swiped off")
     }
+
+//    if (isTopCard)
+//        ShowInstruction(modifier)
 }
 
 @Composable
@@ -340,7 +337,7 @@ fun CardContent(currentCard: String) {
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = painterResource(id = R.drawable.food2),
             contentDescription = "",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
@@ -351,7 +348,7 @@ fun CardContent(currentCard: String) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = painterResource(id = R.drawable.veg_icon),
             contentDescription = "",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier

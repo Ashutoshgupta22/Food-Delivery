@@ -175,8 +175,7 @@ fun BottomNavigationBar(navController: NavController) {
     ) {
 
         items.forEach { item ->
-            val selected = if (currentRoute == item.route)
-                true
+            val selected = if (currentRoute == item.route) true
                 else currentRoute == Lunch_Screen && item.route == BottomNavItem.Home.route
 
             NavigationBarItem(
@@ -260,7 +259,7 @@ fun TopBar() {
                         Icon(imageVector = Icons.Filled.KeyboardArrowDown, contentDescription = "")
 
                         Spacer(modifier = Modifier.weight(1f))
-                        Text(text = "Hello, John!", fontSize = 20.sp)
+                        Text(text = "Hello, Ashu!", fontSize = 20.sp)
                     }
 
                 }
@@ -345,7 +344,7 @@ fun MyNextMeal() {
             .padding(start = 16.dp)
     ) {
 
-        RoundCornerImage(75, 80)
+        RoundCornerImage(R.drawable.biryani,75, 80)
 
         Column(
             modifier = Modifier
@@ -401,7 +400,7 @@ fun SubscriptionItem(label: String, onClick: () -> Unit) {
         modifier = Modifier.clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RoundCornerImage(width = 110, height = 130)
+        RoundCornerImage(R.drawable.food1, width = 110, height = 130)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = label, fontSize = 18.sp, color = Color.Black)
     }
@@ -422,7 +421,7 @@ fun PopularMeals() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = R.drawable.food_sq2),
                     contentDescription = "",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
@@ -448,16 +447,16 @@ fun Offers() {
 
         items(3) {
 
-            RoundCornerImage(width = 280, height = 180)
+            RoundCornerImage(R.drawable.offer, width = 280, height = 180)
             Spacer(modifier = Modifier.width(14.dp))
         }
     }
 }
 
 @Composable
-fun RoundCornerImage(width: Int, height: Int) {
+fun RoundCornerImage(image: Int, width: Int, height: Int) {
     Image(
-        painter = painterResource(id = R.drawable.ic_launcher_background),
+        painter = painterResource(id = image),
         contentDescription = "",
         contentScale = ContentScale.FillBounds,
         modifier = Modifier
