@@ -66,7 +66,7 @@ import com.aspark.spendwiseassign.ui.theme.gold
 fun LunchScreen(navController: NavController) {
 
     Column {
-        LunchTopBar(navController = navController)
+        LunchTopBar("Lunch", navController = navController)
         MultiSelectFilterChip()
 
         LazyColumn(
@@ -92,7 +92,7 @@ fun RestaurantCard(restaurant: LunchRestaurant) {
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
+//            containerColor = Color.White,
             contentColor = Color.Black
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)

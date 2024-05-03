@@ -90,7 +90,7 @@ fun QuickGrabScreen(
     var indexState by remember { mutableIntStateOf(0) }
 
     Column {
-        LunchTopBar(navController)
+        LunchTopBar("Explore", navController)
 
         Column(
             Modifier.verticalScroll(rememberScrollState())
@@ -132,7 +132,7 @@ fun ShowInstruction(modifier: Modifier) {
 }
 
 @Composable
-fun LunchTopBar(navController: NavController) {
+fun LunchTopBar(title: String, navController: NavController) {
 
     Column {
         LargeTopAppBar(
@@ -191,10 +191,11 @@ fun LunchTopBar(navController: NavController) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "Lunch", fontSize = 22.sp, fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(end = 45.dp)
+                            text = title, fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(end = 50.dp)
                         )
                     }
+
                 }
             }
         )
