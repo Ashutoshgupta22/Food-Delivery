@@ -1,3 +1,4 @@
+Food Delivery app UI with card swipe animation.
 
 Screen recording of the app : 
 
